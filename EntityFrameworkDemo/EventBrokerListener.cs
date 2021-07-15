@@ -11,7 +11,7 @@ namespace EntityFrameworkDemo
     {
         public void SaveChangesFailed(DbContextErrorEventData eventData)
         {
-            throw new NotImplementedException();
+            
         }
 
         public Task SaveChangesFailedAsync(DbContextErrorEventData eventData, CancellationToken cancellationToken = default)
@@ -31,6 +31,7 @@ namespace EntityFrameworkDemo
 
         public InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
+            var dd = eventData.Context.ChangeTracker.Entries();
             foreach (var entry in eventData.Context.ChangeTracker.Entries())
             {
                 Correction(entry.Entity);

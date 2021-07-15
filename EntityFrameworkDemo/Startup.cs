@@ -54,11 +54,8 @@ namespace EntityFrameworkDemo
 
             app.UseAuthorization();
 
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
-            var scopeeee = app.ApplicationServices.CreateScope();
-            var context = scopeeee.ServiceProvider.GetRequiredService<CoursesContext>();
-            //var context = app.ApplicationServices.GetService<CoursesContext>();
+            var scope = app.ApplicationServices.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<CoursesContext>();
             AddTestData(context);
 
 
@@ -78,8 +75,6 @@ namespace EntityFrameworkDemo
                 Name = "Ahmed Ali",
                 Level=3
             };
-
-            context.students.Add(testStudent1);
 
             var testCourse1 = new Course
             {
@@ -101,9 +96,12 @@ namespace EntityFrameworkDemo
                 StudentId = testStudent1.Id,
                 CourseName = "React"
             };
+
             context.courses.Add(testCourse1);
             context.courses.Add(testCourse2);
             context.courses.Add(testCourse3);
+            context.students.Add(testStudent1);
+
 
             context.SaveChanges();
         }
