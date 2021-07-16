@@ -56,8 +56,8 @@ namespace EntityFrameworkDemo
 
             var scope = app.ApplicationServices.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<CoursesContext>();
-            AddTestData(context);
-
+           var student= AddTestData(context);
+            UpdateTestData(context, student);
 
             app.UseEndpoints(endpoints =>
             {
@@ -67,7 +67,7 @@ namespace EntityFrameworkDemo
             });
         }
 
-        private static void AddTestData(CoursesContext context)
+        private static Student AddTestData(CoursesContext context)
         {
             var testStudent1 = new Student
             {
@@ -104,6 +104,23 @@ namespace EntityFrameworkDemo
 
 
             context.SaveChanges();
+            return testStudent1;
+        }
+
+
+        private static void UpdateTestData(CoursesContext context, Student studant)
+        {
+           var course =studant.Courses.Where(M => M.Id == 1).SingleOrDefault();
+            studant.Courses.Remove(course);
+            studant.Name = "Test After Update";
+
+            context.Update(studant);
+
+            context.SaveChanges();
+
+
+
+
         }
     }
 }
